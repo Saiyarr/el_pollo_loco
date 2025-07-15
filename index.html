@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Pollo Loco</title>
+    <script src="models/drawable-object.class.js"></script>
+    <script src="models/movable-object.class.js"></script>
+    <script src="models/character.class.js"></script>
+    <script src="models/chicken.class.js"></script>
+    <script src="models/endboss.class.js"></script>
+    <script src="models/small-chicken.class.js"></script>
+    <script src="models/cloud.class.js"></script>
+    <script src="models/status-bar.class.js"></script>
+    <script src="models/status-bar-coin.class.js"></script>
+    <script src="models/status-bar-bottle.class.js"></script>
+    <script src="models/status-bar-endboss.class.js"></script>
+    <script src="models/coin.class.js"></script>
+    <script src="models/bottle.class.js"></script>
+    <script src="models/deadEnemy.class.js"></script>
+    <script src="models/world.class.js"></script>
+    <script src="models/background-object.class.js"></script>
+    <script src="models/keyboard.class.js"></script>
+    <script src="models/level.class.js"></script>
+    <script src="models/throwable-object.class.js"></script>
+    <script src="levels/level1.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/game.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/png" href="img/8_coin/">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Pangolin&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Pangolin&family=Pirata+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+</head>
+<body onload="init()">
+    <h1>EL POLLO LOCO</h1>
+
+
+<div class="game-wrapper">
+        <canvas class="d-none" id="canvas" width="720" height="480"></canvas>
+        <section class="nav-control-buttons">
+            <div class="arrow-cont">
+                <img onmousedown="mobileMoveLeftStart()" onmouseup="mobileMoveLeftEnd()" 
+                onmouseleave="mobileMoveLeftEnd()" ontouchstart="mobileMoveLeftStart()" 
+                ontouchend="mobileMoveLeftEnd()" class="arrow" src="img/user_icons/moveleftbtn.png" alt="">
+                <img onmousedown="mobileMoveRightStart()" onmouseup="mobileMoveRightEnd()" 
+                onmouseleave="mobileMoveRightEnd()" ontouchstart="mobileMoveRightStart()" 
+                ontouchend="mobileMoveRightEnd()" class="arrow" src="img/user_icons/moverightbtn.png" alt="">           
+            </div>
+            <div class="jump-throw-cont">
+                <div onclick="mobileJump()" class="jump-button">
+                <img class="jump" src="img/user_icons/jumpbtn.png" alt="">
+                </div>
+                <div onclick="mobileThrow()" class="throw-button">
+                <img class="throw" src="img/user_icons/throwbtn.png" alt="">
+            </div>
+            </div>
+        </section>
+    </div>
+    
+
+
+<div class="start-overlay d-flex" id="start-overlay">
+    <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="" class="background-image-start">
+    <section class="navbar-buttons-start">
+        <button class="button-start" role="button" onclick="showInstructions()">INSTRUCTIONS</button>
+        <button class="button-start-game" role="button" id="start-game-button" onclick="setEnemies()" disabled>START GAME</button>
+        <button class="button-start" role="button" onclick="showImprint()">IMPRINT</button>
+    </section>
+</div>
+
+<div class="imprint-overlay d-none" id="imprint-overlay">
+    <div class="imprint-content-container">
+        <div class="header-imprint-instructions">
+            <h2>Imprint</h2>
+        </div>
+    <div class="imprint-data">
+        <p class="raleway-font-imprint"><b>Responsible for the Content:</b></p>
+        <p class="raleway-font-imprint">Jannis Meyer</p>
+        <p class="raleway-font-imprint">Germany</p>
+        <p class="raleway-font-imprint"></p>
+        <p class="raleway-font-imprint"></p>
+        <p class="raleway-font-imprint"><b>Contact me here:</b></p>
+        <p class="raleway-font-imprint"><a href="mailto: jannis.myr@gmail.com">jannis.myr@gmail.com</a></p>
+        <p class="raleway-font-imprint"></p>
+    </div>
+    </div>
+    <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="" class="background-image-imprint">
+    <section class="navbar-buttons-imprint">
+        <button class="button-imprint" role="button" onclick="removeImprint()">BACK TO MENU</button>
+    </section>
+</div>
+
+
+<div class="instructions-overlay d-none" id="instructions-overlay">
+    <div class="imprint-content-container">
+        <div class="header-imprint-instructions">
+            <h2>Instructions</h2>
+        </div>
+    <div class="instructions-data">
+        <div class="column-instructions">
+            <p>Move Right -</p>
+            <p>Right Arrow Key</p>
+        </div>
+
+        <div class="column-instructions">
+            <p>Move Left -</p>
+            <p>Left Arrow Key</p> 
+        </div>
+
+        <div class="column-instructions">
+            <p>Jump -</p>
+            <p>Spacebar </p>
+        </div>
+
+        <div class="column-instructions">
+            <p>Throw Bottle -</p>
+            <p>D Key</p>
+        </div>
+    </div>
+    </div>
+    <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="" class="background-image-instructions">
+    <section class="navbar-buttons-instructions">
+        <button class="button-instructions" role="button" onclick="removeInstructions()">BACK TO MENU</button>
+    </section>
+</div>
+
+<div class="lose-overlay bg-lose d-none" id="lose-overlay">
+    <img src="img/9_intro_outro_screens/game_over/you lost.png" alt="" class="background-image-lose">        
+    <section class="navbar-options-lose">
+        <button onclick="restartGameAfterLose()" class="button-lose" role="button">TRY AGAIN</button>
+        <button onclick="backToMainMenuAfterLose()" class="button-lose" role="button">BACK TO MENU</button>
+    </section>
+</div>
+
+
+<div class="win-overlay d-none bg-win" id="win-overlay">
+    <img src="img/You won, you lost/You won A.png" alt="" class="background-image-win">        
+    <section class="navbar-options-win">
+        <button onclick="startGameAgain()" class="button-win" role="button">PLAY AGAIN</button>
+        <button onclick="backToMainMenu()" class="button-win" role="button">BACK TO MENU</button>
+    </section>
+</div>
+
+
+<div class="sound-overlay" id="sound-overlay">
+        <div onclick="toggleGameSound()" id="gameSoundButton" class="sound-button">
+            <img id="soundIcon" class="sound-icon-game" src="img/user_icons/sound_inactive.png" alt="">
+        </div>
+</div>
+
+
+<div class="overlay-turn-device">
+    <div class="headline-device">
+        <p class="turn-device-font">To Play El Pollo Loco...</p>
+    </div>
+    <img src="img/user_icons/trundevice.png" alt="">
+    <div class="headline-device">
+        <p class="turn-device-font">Rotate your device!</p>
+    </div>
+</div>
+
+</body>
+</html>
