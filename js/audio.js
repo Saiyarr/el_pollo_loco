@@ -16,6 +16,9 @@ const bgSound = new Audio('audio/backgroundMusic.mp3');
 bgSound.volume = 0.1;
 bgSound.loop = true;
 
+let soundIsEnabled = false;
+
+
 /** Array holding all audio objects for collective control */
 const gameSounds = [
     bgSound, sleeping, winSound, losesound, jumpSound, coinSound,
@@ -29,40 +32,27 @@ const gameSounds = [
  */
 window.addEventListener('load', () => {
     let soundIcon = document.getElementById("soundIcon");
-    let soundEnabled = localStorage.getItem("soundEnabled") === "true";
+    soundIsEnabled = localStorage.getItem("soundEnabled") === "true";
+
+    bgSound.pause();
     
-    if (soundEnabled) {
-        soundIcon.src = "img/user_icons/sound_acitve.png";
-        enableGameSoundsWithClick();
+    if (soundIsEnabled) {
+        soundIcon.src = "img/user_icons/sound_active.png";
+       
+        
     } else {
         soundIcon.src = "img/user_icons/sound_inactive.png";
         disableGameSounds();
     }
 });
 
-/**
- * Enables all game sounds and waits for user interaction
- * to play background music (required by browser autoplay policies).
- */
-function enableGameSoundsWithClick() {
-    gameSounds.forEach(sound => sound.muted = false);
-    
-    if (bgSound.paused) {
-        const playBgMusic = () => {
-            bgSound.play().catch(error => console.warn("Audio play blocked:", error));
-            document.removeEventListener("click", playBgMusic);
-            document.removeEventListener("keydown", playBgMusic);
-        };
 
-        document.addEventListener("click", playBgMusic);
-        document.addEventListener("keydown", playBgMusic);
-    }
-}
 
 // Mute all sounds initially
 gameSounds.forEach(sound => {
     sound.muted = true;
 });
+
 
 /**
  * Disables all game sounds and pauses the background music.
@@ -88,18 +78,20 @@ function enableGameSounds() {
  */
 function toggleGameSound() {
     let soundIcon = document.getElementById("soundIcon");
-    const activeSound = "img/user_icons/sound_acitve.png";
+    const activeSound = "img/user_icons/sound_active.png";
     const inactiveSound = "img/user_icons/sound_inactive.png";
-    let isSoundActive = soundIcon.src.endsWith("sound-active.png");
+    
 
-    if (isSoundActive) {
+    if (soundIsEnabled) {
         soundIcon.src = inactiveSound;
         disableGameSounds();
         localStorage.setItem("soundEnabled", "false");
+        soundIsEnabled = false;
     } else {
         soundIcon.src = activeSound;
         enableGameSounds();
         localStorage.setItem("soundEnabled", "true");
+        soundIsEnabled = true;
     }
 }
 
