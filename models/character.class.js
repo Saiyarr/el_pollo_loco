@@ -164,7 +164,7 @@ class Character extends MovableObject {
   setupAnimationHandler() {
     setInterval(() => {
       this.handleAnimation();
-    }, 50);
+    }, 100);
   }
 
   setupJumpAnimationHandler() {
