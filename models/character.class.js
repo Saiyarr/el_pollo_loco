@@ -114,6 +114,11 @@ class Character extends MovableObject {
     this.handleWakeUp();
   }
 
+  /**
+   * Bewegt das Objekt nach rechts, wenn die rechte Pfeiltaste gedrückt wird
+   * und das Objekt sich noch innerhalb der Level-Grenze befindet.
+   * Setzt die Blickrichtung auf rechts und aktualisiert die Zeit des letzten Tastendrucks.
+   */
   handleRightMovement() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.moveRight();
@@ -122,6 +127,11 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Bewegt das Objekt nach links, wenn die linke Pfeiltaste gedrückt wird
+   * und das Objekt sich noch innerhalb der linken Level-Grenze befindet.
+   * Setzt die Blickrichtung auf links und aktualisiert die Zeit des letzten Tastendrucks.
+   */
   handleLeftMovement() {
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.moveLeft();
@@ -141,6 +151,11 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Überprüft, ob die Taste "D" gedrückt ist,
+   * und wechselt die Animation vom Schlafen zum Stehen, falls aktuell schlafend.
+   * Aktualisiert außerdem die Zeit des letzten Tastendrucks.
+   */
   handleWakeUp() {
     if (this.world.keyboard.D) {
       if (this.currentImageSet === this.IMAGES_SLEEPING) {
@@ -167,6 +182,10 @@ class Character extends MovableObject {
     }, 100);
   }
 
+  /**
+   * Startet einen Intervall, der regelmäßig überprüft, ob der Charakter in der Luft ist,
+   * und spielt in diesem Fall die Sprunganimation ab.
+   */
   setupJumpAnimationHandler() {
     setInterval(() => {
       if (this.isAboveGround()) {
@@ -202,6 +221,11 @@ class Character extends MovableObject {
     this.playDeathAnimation();
   }
 
+  /**
+   * Spielt die Todesanimation des Charakters ab,
+   * spielt den Todessound und zeigt den Verlustbildschirm an.
+   * Setzt das Spiel anschließend zurück.
+   */
   playDeathAnimation() {
     let deathAnimation = setInterval(() => {
       this.playAnimation(this.IMAGES_DEAD);
@@ -215,6 +239,13 @@ class Character extends MovableObject {
     }, 2000);
   }
 
+  /**
+   * Steuert die Animation des Charakters basierend auf der Tastatureingabe und Inaktivitätszeit.
+   * - Wenn links oder rechts gedrückt wird, wird die Laufanimation abgespielt.
+   * - Wenn die Taste "D" gedrückt wird und der Charakter schläft, wird die Steh-Animation abgespielt.
+   * - Wenn seit der letzten Tasteneingabe mehr als 5 Sekunden vergangen sind, wird die Schlafanimation abgespielt.
+   * - Ansonsten wird die Steh-Animation abgespielt.
+   */
   handleIdleOrWalking() {
     let timeSinceLastKeyPress = Date.now() - this.lastKeyPressTime;
 
