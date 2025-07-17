@@ -131,7 +131,7 @@ class Character extends MovableObject {
   }
 
   /**
-   * Makes the character jump if on ground and space is pressed.
+   * Makes the character jump if on ground and spacebar is pressed.
    */
   handleJump() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
