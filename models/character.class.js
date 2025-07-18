@@ -115,9 +115,11 @@ class Character extends MovableObject {
   }
 
   /**
-   * Bewegt das Objekt nach rechts, wenn die rechte Pfeiltaste gedrückt wird
-   * und das Objekt sich noch innerhalb der Level-Grenze befindet.
-   * Setzt die Blickrichtung auf rechts und aktualisiert die Zeit des letzten Tastendrucks.
+   * Handles the movement of the object to the right when the right arrow key is pressed,
+   * ensuring the object does not move beyond the level's right boundary.
+   * Updates the direction state and the timestamp of the last key press.
+   *
+   * @returns {void}
    */
   handleRightMovement() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -128,9 +130,11 @@ class Character extends MovableObject {
   }
 
   /**
-   * Bewegt das Objekt nach links, wenn die linke Pfeiltaste gedrückt wird
-   * und das Objekt sich noch innerhalb der linken Level-Grenze befindet.
-   * Setzt die Blickrichtung auf links und aktualisiert die Zeit des letzten Tastendrucks.
+   * Handles the movement of the object to the left when the left arrow key is pressed,
+   * ensuring the object does not move beyond the left boundary of the level (x > 0).
+   * Updates the direction state and the timestamp of the last key press.
+   *
+   * @returns {void}
    */
   handleLeftMovement() {
     if (this.world.keyboard.LEFT && this.x > 0) {
@@ -152,9 +156,12 @@ class Character extends MovableObject {
   }
 
   /**
-   * Überprüft, ob die Taste "D" gedrückt ist,
-   * und wechselt die Animation vom Schlafen zum Stehen, falls aktuell schlafend.
-   * Aktualisiert außerdem die Zeit des letzten Tastendrucks.
+   * Handles the wake-up action when the 'D' key is pressed.
+   * If the current image set indicates the object is sleeping,
+   * it switches the animation to the standing images with a specified speed.
+   * Also updates the timestamp of the last key press.
+   *
+   * @returns {void}
    */
   handleWakeUp() {
     if (this.world.keyboard.D) {
@@ -183,8 +190,10 @@ class Character extends MovableObject {
   }
 
   /**
-   * Startet einen Intervall, der regelmäßig überprüft, ob der Charakter in der Luft ist,
-   * und spielt in diesem Fall die Sprunganimation ab.
+   * Sets up a recurring handler that checks if the object is above the ground,
+   * and if so, plays the jump animation at regular intervals (every 120 ms).
+   *
+   * @returns {void}
    */
   setupJumpAnimationHandler() {
     setInterval(() => {
@@ -222,9 +231,11 @@ class Character extends MovableObject {
   }
 
   /**
-   * Spielt die Todesanimation des Charakters ab,
-   * spielt den Todessound und zeigt den Verlustbildschirm an.
-   * Setzt das Spiel anschließend zurück.
+   * Plays the death animation by repeatedly displaying the death images every 100 milliseconds.
+   * After 2 seconds, it resets and plays the death sound, stops the animation,
+   * shows the losing screen, and resets the game state for a loss.
+   *
+   * @returns {void}
    */
   playDeathAnimation() {
     let deathAnimation = setInterval(() => {
@@ -240,11 +251,13 @@ class Character extends MovableObject {
   }
 
   /**
-   * Steuert die Animation des Charakters basierend auf der Tastatureingabe und Inaktivitätszeit.
-   * - Wenn links oder rechts gedrückt wird, wird die Laufanimation abgespielt.
-   * - Wenn die Taste "D" gedrückt wird und der Charakter schläft, wird die Steh-Animation abgespielt.
-   * - Wenn seit der letzten Tasteneingabe mehr als 5 Sekunden vergangen sind, wird die Schlafanimation abgespielt.
-   * - Ansonsten wird die Steh-Animation abgespielt.
+   * Handles the character's animation based on keyboard input and idle time.
+   * - Plays walking animation if left or right keys are pressed.
+   * - Switches from sleeping to standing animation if 'D' is pressed while sleeping.
+   * - Switches to sleeping animation if idle for 5 seconds or more.
+   * - Defaults to standing animation otherwise.
+   *
+   * @returns {void}
    */
   handleIdleOrWalking() {
     let timeSinceLastKeyPress = Date.now() - this.lastKeyPressTime;
