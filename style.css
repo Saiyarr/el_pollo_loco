@@ -690,7 +690,7 @@ cursor: pointer;
 
 
 
-        @media(max-width: 1400px){
+        @media(pointer: coarse){
         .arrow-cont{
             display: flex;
             gap: 24px;
